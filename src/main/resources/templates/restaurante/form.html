@@ -11,7 +11,7 @@
 <!-- Import Icons -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
-
+<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
 <link type="text/css" rel="stylesheet" href="/css/style.css" />
 </head>
 
@@ -22,7 +22,9 @@
 	<div class="container">
 		<h5 class="titulo_h5">Cadastro de Restaurantes</h5>
 		<br />
-		<form action="salvarRestaurante" method="post">
+		<form action="salvarRestaurante" method="post"
+			enctype="multipart/form-data">
+
 			<input type="hidden" th:value="${restaurante?.id}" name="id" />
 			<div class="row">
 
@@ -37,7 +39,8 @@
 					<select required name="tipo.id">
 						<option value="" disabled selected>Escolha</option>
 						<option th:each="tipo: ${tipos}" th:value="${tipo.id}"
-							th:text="${tipo.nome}"></option>
+							th:text="${tipo.nome}"
+							th:selected="${tipo.id == restaurante?.tipo?.id}"></option>
 					</select> <label>Tipo de restaurante:</label>
 				</div>
 
@@ -47,7 +50,7 @@
 					<i class="material-icons prefix">description</i> <label
 						for="input_descricao">Descrição do Restaurante:</label>
 					<textarea id="input_descricao" class="materialize-textarea"
-						th:text="${restaurente?.descricao}" name="descricao"></textarea>
+						th:text="${restaurante?.descricao}" name="descricao"></textarea>
 				</div>
 			</div>
 			<div class="row">
@@ -56,34 +59,78 @@
 					<input type="text" th:value="${restaurante?.cep}" name="cep"
 						required id="input_cep" onblur="pesquisacep(this.value)" />
 				</div>
-				
-				<div class="input-field col s7">	
-					<input type="text" th:value="${restaurante?.endereco}" name="endereco" readonly placeholder="..."
-						required id="input_end" />
+
+				<div class="input-field col s6">
+					<input type="text" th:value="${restaurante?.endereco}"
+						name="endereco" readonly placeholder="..." required id="input_end" />
 					<label for="input_end">Endereço:</label>
 				</div>
-				
-				<div class="input-field col s2">
-					<label for="input_numero">Número:</label>
-					<input type="text" th:value="${restaurante?.numero}" name="numero"
-						required id="input_numero"  />
+
+				<div class="input-field col s3">
+					<label for="input_numero">Número:</label> <input type="text"
+						th:value="${restaurante?.numero}" name="numero" required
+						id="input_numero" />
 				</div>
 			</div>
 			<div class="row">
-				<div class="input-field col s4">
-					<label for="input_bairro"  >Bairro:</label>
-					<input type="text" th:value="${restaurante?.bairro}" name="bairro" readonly placeholder="..."
-						required id="input_bairro"  />
+				<div class="input-field col s5">
+					<label for="input_bairro">Bairro:</label> <input type="text"
+						th:value="${restaurante?.bairro}" name="bairro" readonly
+						placeholder="..." required id="input_bairro" />
 				</div>
-				
+				<div class="input-field col s5">
+					<label for="input_bairro">Cidade:</label> <input type="text"
+						th:value="${restaurante?.cidade}" name="cidade" readonly
+						placeholder="..." required id="input_cidade" />
+				</div>
+				<div class="input-field col s2">
+					<label for="input_bairro">Estado:</label> <input type="text"
+						th:value="${restaurante?.estado}" name="estado" readonly
+						placeholder="..." required id="input_estado" />
+				</div>
 			</div>
+			<div class="row">
+				<div class="input-field col s8">
+					<i class="material-icons prefix">link</i> <label for="input_site">Website:</label>
+					<input type="url" th:value="${restaurante?.site}" name="site"
+						required id="input_site" />
+				</div>
+				<div class="input-field col s4">
+					<i class="material-icons prefix">local_phone</i> <label
+						for="input_telefone">Telefone:</label> <input type="text"
+						th:value="${restaurante?.telefone}" name="telefone" required
+						id="input_telefone" />
+				</div>
+			</div>
+
+			<input type="hidden" th:value="${restaurante?.fotos}" name="fotos" />
+
+			<div class="row">
+				<div class="file-field input-field col s12">
+					<div class="indigo lighten-3 waves-effect waves-light btn-small">
+						<span>Fotos</span> <input type="file" name="fileFotos" multiple
+							accept="image/*">
+					</div>
+					<div class="file-path-wrapper">
+						<input class="file-path validate" type="text"
+							placeholder="Upload de uma ou várias fotos">
+					</div>
+				</div>
+			</div>
+
+			<table class="striped" th:if="${fotosRest?.length > 0}">
+				<caption>Fotos cadastradas</caption>
+				<tr>
+					<td>a</td>
+				</tr>
+			</table>
+
 			<br />
-			<button class="indigo darken-1 waves-light btn"
-				type="submit">
+			<button class="indigo darken-1 waves-light btn" type="submit">
 				<i class="material-icons left">save</i>Salvar
 			</button>
 		</form>
-		<br /> <br />
+		<br /> <br /> <br />
 		<th:block th:include="fragments/mensagem"></th:block>
 	</div>
 
@@ -103,7 +150,7 @@
 		});
 
 		function pesquisacep(cep) {
-			
+
 			//Verifica se campo cep possui valor informado.
 			if (cep != "") {
 
@@ -128,10 +175,10 @@
 			if (!("erro" in conteudo)) {
 				console.log(conteudo);
 				//Atualiza os campos com os valores.
-				document.getElementById('logradouro').value = (conteudo.logradouro);
-				document.getElementById('bairro').value = (conteudo.bairro);
-				document.getElementById('cidade').value = (conteudo.localidade);
-				document.getElementById('uf').value = (conteudo.uf);
+				document.getElementById('input_end').value = (conteudo.logradouro);
+				document.getElementById('input_bairro').value = (conteudo.bairro);
+				document.getElementById('input_cidade').value = (conteudo.localidade);
+				document.getElementById('input_estado').value = (conteudo.uf);
 			} //end if.
 			else {
 				//CEP não Encontrado.
@@ -139,13 +186,13 @@
 				alert("CEP não encontrado.");
 			}
 		}
-		
+
 		function limpa_formulário_cep() {
-		    //Limpa valores do formulário de cep.
-		    document.getElementById('logradouro').value=("");
-		    document.getElementById('bairro').value=("");
-		    document.getElementById('cidade').value=("");
-		    document.getElementById('uf').value=("");    
+			//Limpa valores do formulário de cep.
+			document.getElementById('logradouro').value = ("");
+			document.getElementById('bairro').value = ("");
+			document.getElementById('cidade').value = ("");
+			document.getElementById('uf').value = ("");
 		}
 	</script>
 </body>

@@ -1,5 +1,6 @@
 package br.senai.sp.cotia.ristorapp.ristorapp.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,7 @@ public class Restaurante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
+	@Column(columnDefinition = "text")
 	private String descricao;
 	private String cep;
 	private String endereco;
@@ -22,6 +24,7 @@ public class Restaurante {
 	private String bairro;
 	private String cidade;
 	private String estado;
+	@Column(columnDefinition = "text")
 	private String fotos;
 	@ManyToOne
 	private TipoRestaurante tipo;

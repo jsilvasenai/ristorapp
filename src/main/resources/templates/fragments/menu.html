@@ -7,10 +7,10 @@
 <body>
 	<header th:fragment="menu">
 		<nav>
-			<div class="deep-purple nav-wrapper">
+			<div class="deep-purple nav-wrapper" >
 				<a href="/" class="brand-logo"><i class="material-icons"
 					style="margin-left: 10px">restaurant_menu</i>RistorApp - Admin</a>
-				<ul class="right hide-on-med-and-down">
+				<ul class="right hide-on-med-and-down" th:if="${session.user != null}">
 					<li><a href="/listarTipo/1"
 						class="indigo lighten-3 waves-effect waves-light btn-small">Tipos</a></li>
 					<li><a href="/listarRestaurante/1"
@@ -21,6 +21,9 @@
 						class="indigo lighten-3 waves-effect waves-light btn-small">Administradores</a></li>
 					<li><a
 						class="indigo lighten-3 waves-effect waves-light btn-small">Avaliações</a></li>
+					<li >
+						<a href="/logout"
+						class="red lighten-1 btn-small"><i class="material-icons prefix">exit_to_app</i></a></li>
 				</ul>
 			</div>
 		</nav>

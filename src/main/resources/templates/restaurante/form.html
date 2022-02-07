@@ -117,13 +117,19 @@
 					</div>
 				</div>
 			</div>
+		
+			<div th:if="${restaurante?.vetorFotos?.length > 0 && restaurante?.vetorFotos[0].length > 0}">
+				<h6>Fotos cadastradas</h6>
+				<div>
+					<ul id="lista_fotos_cadrest">
+						<li th:each="foto, iter : ${restaurante?.vetorFotos}" >
+							<a th:href="${foto}" target="_blank"><img th:src="${foto}"></a>
+							<a th:href="@{/excluirFotoRestaurante(idRestaurante=${restaurante.id}, numFoto=${iter.index})}" th:index="${iter.index}" th:urlFoto="${foto}"><i id="btExcluir" class="material-icons" >delete_forever</i></a>
+						</li>
+					</ul>
 
-			<table class="striped" th:if="${fotosRest?.length > 0}">
-				<caption>Fotos cadastradas</caption>
-				<tr>
-					<td>a</td>
-				</tr>
-			</table>
+				</div>
+			</div>
 
 			<br />
 			<button class="indigo darken-1 waves-light btn" type="submit">
@@ -194,6 +200,16 @@
 			document.getElementById('cidade').value = ("");
 			document.getElementById('uf').value = ("");
 		}
+/*		
+		function excluir_foto(idRestaurante, numeroFoto) {
+			$.post("excluirFotoRestaurante", {
+				'idRestaurante' : idRestaurante,
+				'numFoto': numeroFoto
+			}, function() {
+				$('#foto_' + numeroFoto).hide('slow');
+			});
+		}
+		*/
 	</script>
 </body>
 </html>

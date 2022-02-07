@@ -42,3 +42,22 @@
 	padding-bottom: 10px;
 	padding-top: 10px;
 }
+ul#lista_fotos_cadrest li{
+	display: inline;
+}
+
+ul#lista_fotos_cadrest #btExcluir{
+	position: relative;
+	right: 110px;
+    bottom: -30px;
+}
+
+
+ul#lista_fotos_cadrest img{
+	width: 100px;
+}
+
+#form_login {
+	margin-top: 150px;
+	border: 1px dashed #000;
+}

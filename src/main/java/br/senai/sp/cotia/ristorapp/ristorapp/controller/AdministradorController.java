@@ -3,6 +3,8 @@ package br.senai.sp.cotia.ristorapp.ristorapp.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -84,5 +86,26 @@ public class AdministradorController {
 	public String excluirTipo(Long idAdm) {
 		admRep.deleteById(idAdm);
 		return "redirect:/listarAdm/1";
+	}
+
+	@RequestMapping("/login")
+	public String login(Administrador admLogin, RedirectAttributes attributes, HttpSession session) {
+		Administrador admin = admRep.findByEmailAndSenha(admLogin.getEmail(), admLogin.getSenha());
+		if (admin != null) {
+			session.setAttribute("user", admin);
+			return "redirect:/listarRestaurante/1";
+		} else {
+			attributes.addFlashAttribute("mensagemErro", "Login e/ou senha inválidos");
+			return "redirect:/";
+		}
+
+	}
+
+	@RequestMapping("/logout")
+	public String login(HttpSession session) {
+		session.invalidate();
+
+		return "redirect:/";
+
 	}
 }

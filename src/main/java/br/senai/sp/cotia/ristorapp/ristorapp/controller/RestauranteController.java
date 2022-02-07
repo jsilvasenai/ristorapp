@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.cloud.firestore.Blob;
+
 import br.senai.sp.cotia.ristorapp.ristorapp.model.Restaurante;
 import br.senai.sp.cotia.ristorapp.ristorapp.repository.RestauranteRepository;
 import br.senai.sp.cotia.ristorapp.ristorapp.repository.TipoRepository;
-import br.senai.sp.cotia.ristorapp.ristorapp.util.UploadUtil;
+import br.senai.sp.cotia.ristorapp.ristorapp.util.FirebaseUtil;
 
 @Controller
 public class RestauranteController {
@@ -39,10 +41,11 @@ public class RestauranteController {
 
 	@RequestMapping("/salvarRestaurante")
 	public String salvar(Restaurante restaurante, @RequestParam("fileFotos") MultipartFile[] fileFotos) {
+		boolean alteracao = restaurante.getId() != null ? true : false;
 		// caso o restaurante já exista, carrega para a String das fotos as fotos do
 		// restaurante
-		String fotos = restaurante.getId() == null ? "" : restaurante.getFotos();
-		UploadUtil upload = new UploadUtil();
+		String fotos = !alteracao ? "" : restaurante.getFotos();
+		FirebaseUtil upload = new FirebaseUtil();
 		for (MultipartFile file : fileFotos) {
 			// o filefotos sempre vem com 1 arquivo mesmo quando não selecionado
 			if (file.getOriginalFilename().isEmpty()) {
@@ -56,7 +59,11 @@ public class RestauranteController {
 		}
 		restaurante.setFotos(fotos);
 		restRep.save(restaurante);
-		return "redirect:formRestaurante";
+		if (alteracao) {
+			return "redirect:/listarRestaurante/1";
+		} else {
+			return "redirect:/formRestaurante";
+		}
 	}
 
 	@RequestMapping("/listarRestaurante/{page}")
@@ -77,17 +84,34 @@ public class RestauranteController {
 	}
 
 	@RequestMapping("/alterarRest")
-	public String alterarTipo(Model model, Long idRest) {
+	public String alterarRestaurante(Model model, Long idRest) {
 		Restaurante restaurante = restRep.findById(idRest).get();
 		model.addAttribute("restaurante", restaurante);
-		model.addAttribute("fotosRest", restaurante.getFotos().split(";"));
 		return "forward:/formRestaurante";
 	}
-	
-	
+
 	@RequestMapping("/excluirFotoRestaurante")
-	public void excluirFoto(String fotoUrl, HttpServletResponse response) {
-		System.out.println(fotoUrl);
+	public String excluirFoto(long idRestaurante, int numFoto, HttpServletResponse response, Model model) {
+		Restaurante rest = restRep.findById(idRestaurante).get();
+		String fotoUrl = rest.getVetorFotos()[numFoto];
+		FirebaseUtil util = new FirebaseUtil();
+		util.deletar(fotoUrl);
+		rest.setFotos(rest.getFotos().replace(fotoUrl + ";", ""));
+		restRep.save(rest);
+		model.addAttribute("restaurante", rest);
+		return "forward:/formRestaurante";
 	}
 
+	@RequestMapping("/excluirRestaurante")
+	public String excluirRestaurante(long idRestaurante) {
+		Restaurante rest = restRep.findById(idRestaurante).get();
+		for (String foto : rest.getVetorFotos()) {
+			FirebaseUtil util = new FirebaseUtil();
+			if (foto.length() > 0) {
+				util.deletar(foto);
+			}
+		}
+		restRep.delete(rest);
+		return "redirect:/listarRestaurante/1";
+	}
 }

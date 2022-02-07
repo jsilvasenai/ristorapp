@@ -11,13 +11,38 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 
-<link type="text/css" rel="stylesheet"
-	href="/css/style.css"/>
+<link type="text/css" rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body>
 	<div th:replace="fragments/menu :: menu"></div>
-
+	<div class="row">
+		<div class="col s4 offset-s4" id="form_login">
+			<form action="login">
+				<br/>
+				<div class="input-field">
+					<i class="material-icons prefix">supervisor_account</i> 
+					<input id="input_email" type="email" required name="email"><label
+						for="input_email">E-mail</label>
+				</div>
+				<div class="input-field">
+					<i class="material-icons prefix">lock</i> 
+					<input id="input_senha" type="password" required name="senha"><label
+						for="input_senha">Senha</label>
+				</div>
+				<div>
+					<button class="indigo lighten-3 btn-small" type="submit">Entrar</button>
+				</div>
+				<br/>
+			</form>
+			<th:block th:include="fragments/mensagem"></th:block>
+		</div>
+	</div>
+	
 	<div th:replace="fragments/footer :: footer"></div>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="/materialize/js/materialize.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
 </body>
 </html>

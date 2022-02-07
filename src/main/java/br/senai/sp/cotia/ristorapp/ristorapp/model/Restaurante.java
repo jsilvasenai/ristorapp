@@ -30,4 +30,8 @@ public class Restaurante {
 	private TipoRestaurante tipo;
 	private String site;
 	private String telefone;
+	
+	public String[] getVetorFotos() {
+		return this.fotos.split(";");
+	}
 }

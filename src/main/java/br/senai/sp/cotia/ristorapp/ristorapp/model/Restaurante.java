@@ -1,11 +1,14 @@
 package br.senai.sp.cotia.ristorapp.ristorapp.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 
@@ -30,7 +33,9 @@ public class Restaurante {
 	private TipoRestaurante tipo;
 	private String site;
 	private String telefone;
-	
+	@OneToMany(mappedBy = "restaurante")
+	private List<Avaliacao> avaliacoes;
+
 	public String[] getVetorFotos() {
 		return this.fotos.split(";");
 	}

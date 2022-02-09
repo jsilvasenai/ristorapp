@@ -27,7 +27,8 @@ public class AppInterceptor implements HandlerInterceptor {
 		String uri = request.getRequestURI();
 		HttpSession sessao = request.getSession();
 		System.out.println(uri);
-
+return true;
+		/*
 		if (uri.startsWith("/error")) {
 			return true;
 		}
@@ -66,6 +67,6 @@ public class AppInterceptor implements HandlerInterceptor {
 			}
 		}
 		return false;
-
+*/
 	}
 }

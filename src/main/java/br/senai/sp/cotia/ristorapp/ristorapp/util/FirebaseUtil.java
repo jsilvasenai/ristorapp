@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,9 +31,8 @@ public class FirebaseUtil {
 
 		try {
 			//caminhoChave = getClass().getResource("/chavefirebase.json").getFile();
-			File file = ResourceUtils.getFile("classpath:chavefirebase.json");
-			System.out.println("Caminho>>>"+file);
-			credentials = GoogleCredentials.fromStream(new FileInputStream(file));
+			Resource resource = new ClassPathResource("chavefirebase.json");
+			credentials = GoogleCredentials.fromStream(resource.getInputStream());
 			storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());

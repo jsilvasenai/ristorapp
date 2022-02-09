@@ -1,11 +1,14 @@
 package br.senai.sp.cotia.ristorapp.ristorapp.config;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -24,6 +27,7 @@ public class AppConfiguration implements WebMvcConfigurer{
 		registry.addInterceptor(interceptor);
 	}
 	
+	/*Mysql
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -33,16 +37,43 @@ public class AppConfiguration implements WebMvcConfigurer{
 		dataSource.setPassword("root");
 		return dataSource;
 	}
+	*/
+	
+	@Bean
+	public BasicDataSource dataSource() throws URISyntaxException {
+		URI dbUri = new URI(System.getenv("DATABASE_URL"));
 
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() + "?sslmode=require";
+        
+        BasicDataSource basicDataSource = new BasicDataSource();
+        basicDataSource.setUrl(dbUrl);
+        basicDataSource.setUsername(username);
+        basicDataSource.setPassword(password);
+        return basicDataSource;
+	}
+	
+	/*Mysql
 	@Bean
 	public JpaVendorAdapter vendorAdapter() {
 		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-		// adapter.setDatabase(Database.POSTGRESQL);
 		adapter.setDatabase(Database.MYSQL);
 		adapter.setShowSql(true);
 		adapter.setGenerateDdl(true);
 		adapter.setDatabasePlatform("org.hibernate.dialect.MySQL8Dialect");
-		// adapter.setDatabasePlatform("org.hibernate.dialect.PostgreSQLDialect");
+		adapter.setPrepareConnection(true);
+		return adapter;
+	}
+	*/
+	
+	@Bean
+	public JpaVendorAdapter vendorAdapter() {
+		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
+		adapter.setDatabase(Database.POSTGRESQL);
+		adapter.setShowSql(true);
+		adapter.setGenerateDdl(true);
+		adapter.setDatabasePlatform("org.hibernate.dialect.PostgreSQLDialect");
 		adapter.setPrepareConnection(true);
 		return adapter;
 	}

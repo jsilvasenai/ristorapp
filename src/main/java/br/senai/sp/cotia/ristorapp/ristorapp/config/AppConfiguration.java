@@ -1,14 +1,11 @@
 package br.senai.sp.cotia.ristorapp.ristorapp.config;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import javax.sql.DataSource;
 
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -27,7 +24,7 @@ public class AppConfiguration implements WebMvcConfigurer{
 		registry.addInterceptor(interceptor);
 	}
 	
-	/*Mysql
+
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -37,8 +34,8 @@ public class AppConfiguration implements WebMvcConfigurer{
 		dataSource.setPassword("root");
 		return dataSource;
 	}
-	*/
-	
+
+	/*Postgree
 	@Bean
 	public BasicDataSource dataSource() throws URISyntaxException {
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
@@ -53,8 +50,9 @@ public class AppConfiguration implements WebMvcConfigurer{
         basicDataSource.setPassword(password);
         return basicDataSource;
 	}
+	*/
 	
-	/*Mysql
+
 	@Bean
 	public JpaVendorAdapter vendorAdapter() {
 		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
@@ -65,8 +63,10 @@ public class AppConfiguration implements WebMvcConfigurer{
 		adapter.setPrepareConnection(true);
 		return adapter;
 	}
-	*/
+
 	
+	
+	/*PostGree
 	@Bean
 	public JpaVendorAdapter vendorAdapter() {
 		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
@@ -77,4 +77,5 @@ public class AppConfiguration implements WebMvcConfigurer{
 		adapter.setPrepareConnection(true);
 		return adapter;
 	}
+	*/
 }

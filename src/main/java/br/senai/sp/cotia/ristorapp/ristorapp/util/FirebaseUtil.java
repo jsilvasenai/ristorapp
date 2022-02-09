@@ -1,11 +1,11 @@
 package br.senai.sp.cotia.ristorapp.ristorapp.util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.auth.Credentials;
@@ -28,8 +28,10 @@ public class FirebaseUtil {
 	public FirebaseUtil() {
 
 		try {
-			caminhoChave = getClass().getResource("/chavefirebase.json").getPath();
-			credentials = GoogleCredentials.fromStream(new FileInputStream(caminhoChave));
+			//caminhoChave = getClass().getResource("/chavefirebase.json").getFile();
+			File file = ResourceUtils.getFile("classpath:chavefirebase.json");
+			System.out.println("Caminho>>>"+file);
+			credentials = GoogleCredentials.fromStream(new FileInputStream(file));
 			storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());

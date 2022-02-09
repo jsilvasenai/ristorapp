@@ -42,7 +42,7 @@ public class FirebaseUtil {
 		BlobId blobId = BlobId.of(BUCKET_NAME, nomeArquivo);
 		BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
 		storage.create(blobInfo, arquivo.getBytes());
-		return String.format(DOWNLOAD_URL, URLEncoder.encode(nomeArquivo, StandardCharsets.UTF_8));
+		return String.format(DOWNLOAD_URL, nomeArquivo);
 	}
 
 	private String getExtension(String fileName) {

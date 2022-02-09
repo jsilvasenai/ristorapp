@@ -24,7 +24,7 @@ public class AppConfiguration implements WebMvcConfigurer{
 		registry.addInterceptor(interceptor);
 	}
 	
-
+/*
 	@Bean
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -34,8 +34,8 @@ public class AppConfiguration implements WebMvcConfigurer{
 		dataSource.setPassword("root");
 		return dataSource;
 	}
-
-	/*Postgree
+*/
+	
 	@Bean
 	public BasicDataSource dataSource() throws URISyntaxException {
 		URI dbUri = new URI(System.getenv("DATABASE_URL"));
@@ -50,9 +50,9 @@ public class AppConfiguration implements WebMvcConfigurer{
         basicDataSource.setPassword(password);
         return basicDataSource;
 	}
-	*/
 	
-
+	
+/*
 	@Bean
 	public JpaVendorAdapter vendorAdapter() {
 		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
@@ -63,10 +63,10 @@ public class AppConfiguration implements WebMvcConfigurer{
 		adapter.setPrepareConnection(true);
 		return adapter;
 	}
+*/
+	
+	
 
-	
-	
-	/*PostGree
 	@Bean
 	public JpaVendorAdapter vendorAdapter() {
 		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
@@ -77,5 +77,5 @@ public class AppConfiguration implements WebMvcConfigurer{
 		adapter.setPrepareConnection(true);
 		return adapter;
 	}
-	*/
+
 }

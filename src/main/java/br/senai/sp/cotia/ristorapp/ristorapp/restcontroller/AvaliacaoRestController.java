@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.senai.sp.cotia.ristorapp.ristorapp.annotation.Privado;
 import br.senai.sp.cotia.ristorapp.ristorapp.model.Avaliacao;
 import br.senai.sp.cotia.ristorapp.ristorapp.model.Restaurante;
 import br.senai.sp.cotia.ristorapp.ristorapp.model.Usuario;
@@ -30,6 +31,7 @@ public class AvaliacaoRestController {
 	@Autowired
 	private RestauranteRepository restRep;
 
+	@Privado
 	@RequestMapping(value = "/private/avaliacao", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Avaliacao> criarUsuario(@RequestBody Avaliacao avaliacao) {
 		try {

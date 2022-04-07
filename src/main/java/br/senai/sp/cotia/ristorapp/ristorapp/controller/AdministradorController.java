@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.senai.sp.cotia.ristorapp.ristorapp.annotation.Publico;
 import br.senai.sp.cotia.ristorapp.ristorapp.model.Administrador;
 import br.senai.sp.cotia.ristorapp.ristorapp.repository.AdminRepository;
 import br.senai.sp.cotia.ristorapp.ristorapp.util.HashUtil;
@@ -88,6 +89,7 @@ public class AdministradorController {
 		return "redirect:/listarAdm/1";
 	}
 
+	@Publico
 	@RequestMapping("/login")
 	public String login(Administrador admLogin, RedirectAttributes attributes, HttpSession session) {
 		Administrador admin = admRep.findByEmailAndSenha(admLogin.getEmail(), admLogin.getSenha());
